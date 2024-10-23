@@ -1,0 +1,34 @@
+---
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: users-svc-rs
+spec: 
+  minReadySeconds: 5
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-svc
+  template: 
+    metadata:
+      labels:
+        app: users-svc
+    spec: 
+      containers:
+        - image: shaikkhajaibrahim/libuserssvc:1.0
+          name: users-service
+          resources:  
+            requests:
+              memory: "24Mi"  
+              cpu: "100m"     
+            limits:
+              memory: "128Mi" 
+              cpu: "500m"     
+          env:
+            - name: SECRET_KEY
+              value: "YtDEVWnL35aAIP-5yxeLjAZ49R920-mMNDfwPyWULu63HFsYzo0f-LO2InxC8eu428k"  
+            - name: DATABASE_URL
+              value: postgresql://user:password:users-db:5432/usersdb  
+          ports:
+            - containerPort: 8000  

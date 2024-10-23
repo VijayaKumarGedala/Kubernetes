@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: spc
+  labels:
+    env: Dev
+    spp: web
+spc:
+  containers: 
+    name: spcapp
+    image: shaikkhajaibrahim/spcjan2024:1.0
+    resources:
+      requests: 
+        cpu: 250m
+        memory: 256m
+      limits:
+        cpu: 500m
+        memory: 256m
+    ports:
+      containerPort: 8080
+      protocol: TCP

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spc
+  labels:
+    env: dev
+    app: spc
+spec:
+  container:
+    - name: spc
+      image: shaikkhajaibrahim/spcjan2024:1.0
+      ports:
+        - containerport: 8080
+          protocol: TCP       
+    
