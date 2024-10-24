@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: books-db-rs
+  name: books-db
   labels:
     app: books-db
 spec:
