@@ -1,45 +1,45 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: books-svc-deploy
-  annotations: 
+  name: books-service
+  annotations:
     kubernetes.io/change-cause: "version v1.0"
-spec: 
-  minReadySeconds: 1
+spec:
+  minReadySeconds: 5
   replicas: 2
   selector:
     matchLabels:
-      app: books-service
-  template: 
+      app: books-svc
+  template:
     metadata:
       labels:
-        app: books-service
-    spec: 
+        app: books-svc
+    spec:
       containers:
-        - image: shaikkhajaibrahim/libbookssvc:1.0
-          name: books-service
-          resources:  
+        - name: books-service
+          image: shaikkhajaibrahim/libbookssvc:1.0
+          resources:
             requests:
-              memory: "24Mi"  
-              cpu: "100m"  
+              memory: 24M
+              cpu: 100m
             limits:
-              memory: "128Mi" 
-              cpu: "500m"  
+              memory: 128M
+              cpu: 500m
           envFrom:
             - configMapRef:
-                name: books-svc-deploy-config
+                name: books-svc-config
           ports:
-            - containerPort: 8000  
-
+          - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: books-service
-spec: 
+  name: users-svc
+spec:
   type: ClusterIP
   selector:
-    app: books-service  
+    app: users-svc
   ports:
-    - port: 8000
-      targetPort: 8000
+  - port: 8000
+    targetPort: 8000
