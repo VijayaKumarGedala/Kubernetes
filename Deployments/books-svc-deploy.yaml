@@ -1,19 +1,21 @@
 ---
 
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: books-svc-rs
+  name: books-svc-deploy
+  annotations: 
+    kubernetes.io/change-cause: "version v1.0"
 spec: 
-  minReadySeconds: 5
-  replicas: 1
+  minReadySeconds: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: books-svc
+      app: books-service
   template: 
     metadata:
       labels:
-        app: books-svc
+        app: books-service
     spec: 
       containers:
         - image: shaikkhajaibrahim/libbookssvc:1.0
@@ -25,22 +27,21 @@ spec:
             limits:
               memory: 128Mi
               cpu: 500m  
-          env:
-            - name: SECRET_KEY
-              value: "YtDEVWnL35aAIP-5yxeLjAZ49R920-mMNDfwPyWULu63HFsYzo0f-LO2InxC8eu428k"  
-            - name: DATABASE_URL
-              value: postgresql://user:password@books-db:5432/booksdb  
+          envFrom:
+          - configMapRef:
+              name: books-svc-deploy-config
           ports:
             - containerPort: 8000  
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: books-svc
-spec:
+  name: books-service
+spec: 
   type: ClusterIP
   selector:
-    app: books-svc
+    app: web
   ports:
-  - port: 8000
-    targetPort: 8000
+    - port: 8000
+      targetPort: 8000
