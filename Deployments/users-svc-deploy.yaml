@@ -44,7 +44,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
             httpGet:
-              path: docs/
+              path: /docs
               port: 8000
           startupProbe:
             initialDelaySeconds: 2
