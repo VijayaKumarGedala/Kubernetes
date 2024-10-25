@@ -21,17 +21,17 @@ spec:
           image: shaikkhajaibrahim/libuserssvc:1.0
           resources:
             requests:
-              memory: 24M
-              cpu: 100m
+              memory: "24Mi"  # Use Mi for memory units
+              cpu: "100m"
             limits:
-              memory: 128M
-              cpu: 500m
+              memory: "128Mi"  # Use Mi for memory units
+              cpu: "500m"
           envFrom:
             - secretRef:
                 name: users-svc-secrets
           ports:
-          - containerPort: 8000
-          livenessprobe: 
+            - containerPort: 8000
+          livenessProbe:  # Corrected spelling from 'livenessprobe'
             initialDelaySeconds: 3
             periodSeconds: 10
             successThreshold: 1
@@ -52,11 +52,10 @@ spec:
             successThreshold: 1
             failureThreshold: 3
             exec:
-              command: 
+              command:
                 - /bin/sh
                 - -c
-                - ps aux | grep uvicorn                       
-            
+                - ps aux | grep uvicorn
 
 ---
 apiVersion: v1
@@ -64,9 +63,9 @@ kind: Service
 metadata:
   name: users-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: users-svc
   ports:
-  - port: 8000
-    targetPort: 8000
+    - port: 8000       # Port exposed by the service 
+      targetPort: 8000 # Port on the container to forward to 
