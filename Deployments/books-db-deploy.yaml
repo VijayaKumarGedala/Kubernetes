@@ -37,7 +37,7 @@ kind: Service
 metadata:
   name: books-db
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     db: books
   ports:

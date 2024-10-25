@@ -37,7 +37,7 @@ kind: Service
 metadata:
   name: users-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: users-svc
   ports:
