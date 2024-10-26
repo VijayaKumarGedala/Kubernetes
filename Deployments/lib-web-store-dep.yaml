@@ -43,4 +43,4 @@ spec:
     app: webstore  # Selects pods with the label 'app=webstore'
   ports:
     - port: 80
-      targetPort: 
+      targetPort: 3000
