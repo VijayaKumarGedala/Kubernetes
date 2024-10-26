@@ -21,25 +21,26 @@ spec:
           image: shaikkhajaibrahim/libbookssvc:1.0
           resources:
             requests:
-              memory: 24M
-              cpu: 100m
+              memory: "24Mi"  # Use Mi for memory units for consistency
+              cpu: "100m"
             limits:
-              memory: 128M
-              cpu: 500m
+              memory: "128Mi"  # Use Mi for memory units for consistency
+              cpu: "500m"
           envFrom:
             - secretRef:
-                name: books-svc-secrets
+                name: books-svc-secrets  # Reference to the secret containing environment variables
           ports:
-          - containerPort: 8000
+            - containerPort: 8000  # Port that the container listens on
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-svc
+  name: books-svc  # Updated to match the deployment's app label
 spec:
-  type: ClusterIP
+  type: ClusterIP  # Exposes the service internally within the cluster
   selector:
-    app: users-svc
+    app: books-svc  # Selects pods with the label 'app=books-svc'
   ports:
-  - port: 8000
-    targetPort: 8000
+    - port: 8000       # Port exposed by the service
+      targetPort: 8000 # Port on the container to forward traffic to

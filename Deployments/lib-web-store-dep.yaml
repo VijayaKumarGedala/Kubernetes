@@ -21,7 +21,7 @@ spec:
           image: shaikkhajaibrahim/libwebstore:1.0
           envFrom:
             - secretRef:
-                name: webstore-secrets
+                name: webstore-secrets  # Reference to the secret containing environment variables
           resources:
             requests:
               memory: "24Mi"  
@@ -30,7 +30,7 @@ spec:
               memory: "128Mi" 
               cpu: "500m"     
           ports:
-            - containerPort: 3000  
+            - containerPort: 3000  # Port that the container listens on
 
 ---
 apiVersion: v1
@@ -38,9 +38,8 @@ kind: Service
 metadata:
   name: librarystore-svc
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # Exposes the service externally using a cloud provider's load balancer
   selector:
-    app: webstore
+    app: webstore  # Selects pods with the label 'app=webstore'
   ports:
-    - port: 80
-      targetPort: 3000
+    - port
