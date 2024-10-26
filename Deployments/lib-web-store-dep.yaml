@@ -1,5 +1,4 @@
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,11 +17,12 @@ spec:
         app: webstore
     spec: 
       containers:
-        - image: shaikkhajaibrahim/libwebstore:1.0
-          name: webstore
-          envfrom:
-            -secretRef:
-              name: webstore-secrets
+        - name: webstore
+          image: shaikkhajaibrahim/libwebstore:1.0
+          envFrom:
+            - secretRef:
+                name: webstore-secrets
+          resources:
             requests:
               memory: "24Mi"  
               cpu: "100m"     
@@ -42,5 +42,5 @@ spec:
   selector:
     app: webstore
   ports:
-  - port: 80
-    targetPort: 3000
+    - port: 80
+      targetPort: 3000
