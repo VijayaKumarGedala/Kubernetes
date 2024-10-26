@@ -37,7 +37,7 @@ kind: Service
 metadata:
   name: users-db
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     db: users
   ports:
