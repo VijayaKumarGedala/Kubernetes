@@ -1,0 +1,46 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lib-webstore
+  annotations:
+    kubernetes.io/change-cause: "version v1.0"
+spec:
+  minReadySeconds: 10
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: webstore
+  template:
+    metadata: 
+      labels: 
+        app: webstore
+    spec: 
+      containers:
+        - image: shaikkhajaibrahim/libwebstore:1.0
+          name: webstore
+          envfrom:
+            -secretRef:
+              name: webstore-secrets
+            requests:
+              memory: "24Mi"  
+              cpu: "100m"     
+            limits:
+              memory: "128Mi" 
+              cpu: "500m"     
+          ports:
+            - containerPort: 3000  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librarystore-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: webstore
+  ports:
+  - port: 80
+    targetPort: 3000
