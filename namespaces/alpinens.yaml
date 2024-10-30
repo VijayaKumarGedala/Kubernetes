@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: alpine-deploy
+  namespace: default
+  annotations: 
+    kubernetes.io/change-cause: "version v1.0"
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: alpine1
+  template:
+    metadata:
+      labels:
+        app: alpine1
+    spec:
+      containers: 
+        - name: alpine1
+          image: alpine:latest
+          args: 
+            - sleep
+            - 1d
+          resources:
+            requests:
+              memory: "124Mi"
+              cpu: "32m"
+            limits:
+              memory: "245Mi"
+              cpu: "64m"
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpine-service
+  namespace: default
+spec:
+  type: ClusterIP
+  selector: 
+    app: alpine1
+  ports: 
+    - port: 80
+      targetPort: 80
