@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-service
+  annotations:
+    kubernetes.io/change-cause: "version v1.0"
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  selector:
+    matchLabels:
+      app: books-svc
+  template:
+    metadata:
+      labels:
+        app: books-svc
+    spec:
+      containers:
+        - name: books-service
+          image: shaikkhajaibrahim/libbookssvc:1.0
+          resources:
+            requests:
+              memory: "24Mi"  # Use Mi for memory units for consistency
+              cpu: "100m"
+            limits:
+              memory: "128Mi"  # Use Mi for memory units for consistency
+              cpu: "500m"
+          envFrom:
+            - secretRef:
+                name: books-svc-secrets  # Reference to the secret containing environment variables
+          ports:
+            - containerPort: 8000  # Port that the container listens on
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: books-svc  # Updated to match the deployment's app label
+spec:
+  type: ClusterIP  # Exposes the service internally within the cluster
+  selector:
+    app: books-svc  # Selects pods with the label 'app=books-svc'
+  ports:
+    - port: 8000       # Port exposed by the service
+      targetPort: 8000 # Port on the container to forward traffic to
