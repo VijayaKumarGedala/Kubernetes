@@ -3,7 +3,7 @@ kind: Pod
 metadate:
   - name: hello-pod
 spec:
-  - containers: 
-      - name: web
-        image: nginx:1.27
+  containers: 
+    - name: web
+      image: nginx:1.27
   
